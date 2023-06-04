@@ -7,6 +7,28 @@ import { setActivePinia, createPinia } from 'pinia'
 import App from '@/App.vue';
 import axios from 'axios';
 
+vi.mock('axios', () => {
+  return {
+    default: {
+      post: vi.fn(),
+      get: vi.fn(),
+      delete: vi.fn(),
+      put: vi.fn(),
+      create: vi.fn().mockReturnThis(),
+      interceptors: {
+        request: {
+          use: vi.fn(),
+          eject: vi.fn()
+        },
+        response: {
+          use: vi.fn(),
+          eject: vi.fn()
+        }
+      }
+    }
+  }
+})
+
 describe('App.vue', () => {
   //spy
   const getProducts = vi.spyOn(axios, 'get');
